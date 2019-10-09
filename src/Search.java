@@ -1,12 +1,13 @@
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 public class Search
 {
     public static final int horizontalGridSize = 10;
     public static final int verticalGridSize = 6;
-
+    public static ArrayList<Boolean> algXreturn;
     public static final char[] input = {'P','X','F','V','W','Y','I','T','Z','U','N','L'};
 
     // Static UI class to display the board
@@ -18,7 +19,7 @@ public class Search
         // Initialize an empty board
         int[][] field = new int[horizontalGridSize][verticalGridSize];
 		wipeField(field);
-		algorithmX(buildMatrix(field));
+		algXreturn = algorithmX(buildMatrix(field),new ArrayList<>());
     }
     //takes the pentomino character and outputs the unique integer ID for it
     private static int characterToID(char character) {
@@ -76,12 +77,11 @@ public class Search
     }
 
     //takes the possibilities matrix and outputs a solution for that matrix
-	public static ArrayList<Boolean> algorithmX(ArrayList<ArrayList<Boolean>> matrix){
+	public static ArrayList<Boolean> algorithmX(ArrayList<ArrayList<Boolean>> matrix, ArrayList<Boolean> sol){
 		int minC=1000000;
 		int sumC=0;
 		int indC=0;
 		int n=0;
-		ArrayList<Boolean> sol=new ArrayList<>();
 
 		if(matrix.get(0).size()==0){
 			return sol;
@@ -102,9 +102,22 @@ public class Search
 			sumC=0;
 		}
 
-		for (int i = 0; i < matrix.size(); i++) {
-			if(matrix.get(i).get(indC)){
-				sol=new ArrayList<>();
+		for (int r = 0; r < matrix.size()-1; r++) {
+			if(matrix.get(r).get(indC)){
+				sol=new ArrayList<>(matrix.get(r));
+				for(int j=0;j<matrix.get(r).size()-1;j++){
+				    if(matrix.get(r).get(j)){
+				        for(int i=0;i<matrix.size()-1;i++){
+				            if(matrix.get(i).get(j)){
+				                matrix.remove(i);
+                            }
+                        }
+				        for(int i=0;i<matrix.size()-1;i++) {
+                            matrix.get(i).remove(j);
+                        }
+                    }
+                }
+				return algorithmX(matrix, sol);
 			}
 		}
 		return sol;
@@ -190,5 +203,7 @@ public class Search
     public static void main(String[] args)
     {
         search();
+        System.out.println("The array is "+Arrays.toString(algXreturn.toArray()));
+        // I don't know how to convert back from the list to a grid representation :(
     }
 }
