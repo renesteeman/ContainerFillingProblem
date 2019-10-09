@@ -7,7 +7,7 @@ public class Search
 {
     public static final int horizontalGridSize = 10;
     public static final int verticalGridSize = 6;
-    public static ArrayList<Boolean> algXreturn;
+    public static ArrayList<ArrayList<Boolean>> algXreturn;
     public static final char[] input = {'P','X','F','V','W','Y','I','T','Z','U','N','L'};
 
     // Static UI class to display the board
@@ -77,7 +77,7 @@ public class Search
     }
 
     //takes the possibilities matrix and outputs a solution for that matrix
-	public static ArrayList<Boolean> algorithmX(ArrayList<ArrayList<Boolean>> matrix, ArrayList<Boolean> sol){
+	public static ArrayList<ArrayList<Boolean>> algorithmX(ArrayList<ArrayList<Boolean>> matrix, ArrayList<ArrayList<Boolean>> sol){
 		int minC=1000000;
 		int sumC=0;
 		int indC=0;
@@ -104,7 +104,8 @@ public class Search
 
 		for (int r = 0; r < matrix.size()-1; r++) {
 			if(matrix.get(r).get(indC)){
-				sol=new ArrayList<>(matrix.get(r));
+				sol=new ArrayList<>(sol);
+				sol.add(matrix.get(r));
 				for(int j=0;j<matrix.get(r).size()-1;j++){
 				    if(matrix.get(r).get(j)){
 				        for(int i=0;i<matrix.size()-1;i++){
