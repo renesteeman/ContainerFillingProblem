@@ -51,80 +51,6 @@ public class Search
     	return pentID;
     }
 
-    //TODO replace bruteForce with recursions
-    private static void bruteForce( int[][] field){
-    	Random random = new Random();
-    	boolean solutionFound = false;
-
-    	while (!solutionFound) {
-    		solutionFound = true;
-
-      	//Empty board again to find a solution
-  			for (int i = 0; i < field.length; i++) {
-  				for (int j = 0; j < field[i].length; j++) {
-  					field[i][j] = -1;
-  				}
-  			}
-
-    		//Put all pentominoes with random rotation/inversion on a random position on the board
-    		for (int i = 0; i < input.length; i++) {
-
-    			//Choose a pentomino and randomly rotate/inverse it
-    			int pentID = characterToID(input[i]);
-    			int mutation = random.nextInt(PentominoDatabase.data[pentID].length);
-    			int[][] pieceToPlace = PentominoDatabase.data[pentID][mutation];
-
-    			//Randomly generate a position to put the pentomino on the board
-    			int x;
-    			int y;
-    			if (horizontalGridSize < pieceToPlace.length) {
-    				//this particular rotation of the piece is too long for the field
-    				x=-1;
-    			} else if (horizontalGridSize == pieceToPlace.length) {
-    				//this particular rotation of the piece fits perfectly into the width of the field
-    				x = 0;
-    			} else {
-    				//there are multiple possibilities where to place the piece without leaving the field
-    				x = random.nextInt(horizontalGridSize-pieceToPlace.length+1);
-    			}
-
-    			if (verticalGridSize < pieceToPlace[0].length) {
-    				//this particular rotation of the piece is too high for the field
-    				y=-1;
-    			} else if (verticalGridSize == pieceToPlace[0].length) {
-    				//this particular rotation of the piece fits perfectly into the height of the field
-    				y = 0;
-    			} else {
-    				//there are multiple possibilities where to place the piece without leaving the field
-    				y = random.nextInt(verticalGridSize-pieceToPlace[0].length+1);
-    			}
-
-    			//If there is a possibility to place the piece on the field, do it
-    			if (x >= 0 && y >= 0) {
-	    			addPiece(field, pieceToPlace, pentID, x, y);
-	    		}
-    		}
-
-    		for (int i = 0; i < field.length; i++) {
-				for (int j = 0; j < field[i].length; j++) {
-					if(field[i][j] == -1) solutionFound = false;
-				}
-			}
-
-     		//if (solutionFound) {
-  			try{
-  				Thread.sleep(100);
-  				ui.setState(field);
-  				System.out.println("Solution found");
-  			} catch (InterruptedException ie){
-    			//display the field
-    			ui.setState(field);
-    			System.out.println("Solution found");
-    			break;
-    		}
-    	}
-    }
-
 
 
     // Adds a pentomino to the position on the field (overriding current board at that position)
@@ -150,12 +76,12 @@ public class Search
     }
 
     //takes the possibilities matrix and outputs a solution for that matrix
-	public static ArrayList<Integer> algorithmX(ArrayList<ArrayList<Integer>> matrix){
+	public static ArrayList<Boolean> algorithmX(ArrayList<ArrayList<Boolean>> matrix){
 		int minC=1000000;
 		int sumC=0;
 		int indC=0;
 		int n=0;
-		ArrayList<Integer> sol=new ArrayList<Integer>();
+		ArrayList<Boolean> sol=new ArrayList<>();
 
 		if(matrix.get(0).size()==0){
 			return sol;
@@ -163,7 +89,9 @@ public class Search
 		for (int i = 0; i < matrix.get(0).size(); i++) {
 			n=0;
 			for (int j = 0; j < matrix.size(); j++) {
-				sumC+=matrix.get(j).get(i);
+				if(matrix.get(j).get(i)) {
+					sumC++;
+				}
 				n++;
 			}
 			if(sumC<minC){
@@ -175,8 +103,8 @@ public class Search
 		}
 
 		for (int i = 0; i < matrix.size(); i++) {
-			if(matrix.get(i).get(indC)==1){
-				sol=new ArrayList<Integer>();
+			if(matrix.get(i).get(indC)){
+				sol=new ArrayList<>();
 			}
 		}
 		return sol;
@@ -192,8 +120,8 @@ public class Search
 	}
 
 	//returns a matrix with all possible positions for all pentominoes in the grid
-	public static ArrayList<ArrayList<Integer>> buildMatrix(int[][] field) {
-		int[][] matrix = new int[10000][(horizontalGridSize*verticalGridSize)+12];
+	public static ArrayList<ArrayList<Boolean>> buildMatrix(int[][] field) {
+		boolean[][] matrix = new boolean[10000][(horizontalGridSize*verticalGridSize)+12];
 		int[][] onePos;
 		int pentID = 0;
 		int mutation = 0;
@@ -232,9 +160,9 @@ public class Search
 						if (x >= 0 && y >= 0) {
 							onePos = addPiece(field, pieceToPlace, pentID, x, y);
 							for (int w = 0; w < onePos.length; w++) {
-								matrix[row][12 + onePos[w][0] + (onePos[w][1] * horizontalGridSize)] = 1;
+								matrix[row][12 + onePos[w][0] + (onePos[w][1] * horizontalGridSize)] = true;
 							}
-							matrix[row][pentID] = 1;
+							matrix[row][pentID] = true;
 							wipeField(field);
 							row++;
 						}
@@ -243,16 +171,16 @@ public class Search
 			}
 		}
 
-		Integer[][] matrix1=new Integer[matrix.length][matrix[0].length];
+		Boolean[][] matrix1=new Boolean[matrix.length][matrix[0].length];
 		for (int k = 0; k < matrix.length; k++) {
 			for (int l = 0; l < matrix[k].length; l++) {
 				matrix1[k][l]=matrix[k][l];
 			}
 		}
 
-		ArrayList<ArrayList<Integer>> list= new ArrayList<ArrayList<Integer>>();
+		ArrayList<ArrayList<Boolean>> list= new ArrayList<>();
 		for (int i = 0; i < row; i++) {
-			ArrayList<Integer> arl = new ArrayList<Integer>(Arrays.asList(matrix1[i]));
+			ArrayList<Boolean> arl = new ArrayList<>(Arrays.asList(matrix1[i]));
 			list.add(arl);
 		}
 		return list;
