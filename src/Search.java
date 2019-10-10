@@ -32,7 +32,7 @@ public class Search
 		arl.add(new ArrayList<>(Arrays.asList(false,true,false,false,false,false,true)));
 		arl.add(new ArrayList<>(Arrays.asList(false,false,false,true,true,false,true)));
 
-		algorithmX(arl,new ArrayList<ArrayList<Integer>>());
+		algorithmX(arl,new ArrayList<>());
 
 		tempArr= new ArrayList<>();
 		solArr= new ArrayList<>();
@@ -86,10 +86,32 @@ public class Search
 	}
 
 	//TO DO
-	public static ArrayList<ArrayList<Node>> arrToDL(ArrayList<ArrayList<Boolean>> matrix){
-		Node header = new Node();
-		ArrayList<ArrayList<Node>> DLLMatrix=new ArrayList<ArrayList<Node>>();
-		return DLLMatrix;
+	public static Node arrToDL(ArrayList<ArrayList<Boolean>> matrix){
+        Node header = new Node();
+
+        //creating a working node so that we don't have to track back to header every time
+        Node workingNode = header;
+		for(int i=0;i<matrix.get(0).size();i++){
+		    //adding a new column node
+		    workingNode.setRight(new Node());
+		    workingNode.getRight().setLeft(workingNode);
+		    workingNode=workingNode.getRight();
+		    //saving it as a column node for reference in the internal for loop
+		    Node columnNode = workingNode;
+		    for(int j=0;j<matrix.size();j++){
+		        if(matrix.get(j).get(i)){
+		            //if there is a 1/true in the matrix, adding a new node below the column node and entering it
+		            workingNode.setDown(new Node());
+		            workingNode.getDown().setUp(workingNode);
+		            workingNode=workingNode.getDown();
+		            workingNode.setColumn(columnNode);
+		            columnNode.incrementNodeCount();
+                }
+            }
+		    //getting back to the column node
+            workingNode=workingNode.getColumn();
+        }
+		return header;
 	}
 
 	// Adds a pentomino to the position on the field (overriding current board at that position)
@@ -213,11 +235,6 @@ public class Search
 		for (int i = rowDel.size() - 1; i > -1; i--) {
 			int rowN = rowDel.get(i);
 			deleteRow(rowN, matrix1);
-		}
-
-		for (int i = colDel.size()-1; i > -1; i--) {
-			int colN = colDel.get(i);
-			deleteColumn(colN, matrix1);
 		}
 
 		/*System.out.println("2");
