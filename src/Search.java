@@ -9,9 +9,7 @@ public class Search
 {
 	public static final int horizontalGridSize = 12;
 	public static final int verticalGridSize = 5;
-	public static ArrayList<ArrayList<Boolean>> algXreturn;
 	public static ArrayList<ArrayList<Integer>> supMat;
-	public static ArrayList<Integer> solutions= new ArrayList<>();
 	public static final char[] input = {'P','X','F','V','W','Y','T','Z','U','N','L','I'};
 	//public static final char[] input = {'T','W','Z','L','I','Y'};
 	public static ArrayList<ArrayList<Boolean>> solRows = new ArrayList<ArrayList<Boolean>>();
@@ -132,6 +130,12 @@ public class Search
 
 		return matrix;
 	}
+
+	/*public static int algorithmX(Node header){
+		if(header.getRight()==null){
+
+		}
+	}*/
 
 	public static int algorithmX(ArrayList<ArrayList<Boolean>> matrix, ArrayList<ArrayList<Integer>> suppMat){
 
