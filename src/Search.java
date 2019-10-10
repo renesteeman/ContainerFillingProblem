@@ -8,21 +8,28 @@ import java.util.Random;
 public class Search
 {
 	public static final int horizontalGridSize = 12;
-	public static final int verticalGridSize = 5;
-	public static ArrayList<ArrayList<Integer>> supMat;
+	public static final int verticalGridSize = 3;
+
 	public static final char[] input = {'P','X','F','V','W','Y','T','Z','U','N','L','I'};
+
+	public static ArrayList<ArrayList<Integer>> supMat=new ArrayList<ArrayList<Integer>>();
 	public static ArrayList<ArrayList<Boolean>> solRows = new ArrayList<ArrayList<Boolean>>();
 	public static ArrayList<String> tempArr= new ArrayList<>();
 	public static ArrayList<String> solArr= new ArrayList<>();
 	// Static UI class to display the board
 	public static UI ui = new UI(horizontalGridSize, verticalGridSize, 50);
+
+	//have we found a solution?
 	public static boolean flag=false;
+
+	//choose algorithm 0:bruteForce, 1:algorithmX
 	public static int chosenAlgorithm = 1;
 
 	// Helper function which starts the brute force algorithm
 	public static void search() {
 		// Initialize an empty board
 		int[][] field = new int[horizontalGridSize][verticalGridSize];
+		int[][] solutionField = new int[horizontalGridSize][verticalGridSize];
 		wipeField(field);
 
 		//do the bruteforce
@@ -32,55 +39,58 @@ public class Search
 
 		//do AlgorithmX
 		if(chosenAlgorithm==1) {
+			//create matrix from possibilities
 			ArrayList<ArrayList<Boolean>> matrix = buildMatrix(field);
-			algorithmX(matrix, new ArrayList<ArrayList<Integer>>());
-
-			tempArr = new ArrayList<>();
-			solArr = new ArrayList<>();
-
-		/*System.out.println("supmat");
-		for (int i = 0; i < supMat.size(); i++) {
-			System.out.println(Arrays.toString(supMat.get(i).toArray()));
-		}
-		System.out.println();*/
-			//supMat.remove(0);
-
-			for (int i = 0; i < supMat.get(0).get(0); i++) {
-				tempArr.add("" + i);
+			//execute order 66
+			algorithmX(matrix, supMat);
+			//process the support matrix to get the solution out
+			if(supMat.size()>0){
+				solutionField=processSolution(matrix,field);
+				UI ui = new UI(horizontalGridSize, verticalGridSize, 50);
+				ui.setState(solutionField);
+			} else {
+				System.out.println("no solution for this matrix");
 			}
-
-			System.out.println();
-			for (int i = 0; i < supMat.size(); i++) {
-				solArr.add(tempArr.get(supMat.get(i).get(1)));
-				for (int j = supMat.get(i).size() - 1; j > 1; j--) {
-					tempArr.remove((int) supMat.get(i).get(j));
-				}
-			}
-
-			for (int i = 0; i < solArr.size(); i++) {
-				solRows.add(matrix.get(Integer.parseInt(solArr.get(i))));
-			}
-			wipeField(field);
-
-			for (int i = 0; i < solRows.size(); i++) {
-				int col = -2;
-				for (int j = 0; j < input.length; j++) {
-					if (solRows.get(i).get(j)) col = characterToID(input[j]);
-				}
-				for (int j = input.length; j < solRows.get(0).size(); j++) {
-					if (solRows.get(i).get(j)) {
-						int n = j - input.length;
-						int x = n % horizontalGridSize;
-						int y = (int) ((n / horizontalGridSize));
-						field[x][y] = col;
-					}
-				}
-			}
-
-			ui.setState(field);
 		}
 	}
 
+	//process the support matrix to get the solution out
+	private static int[][] processSolution(ArrayList<ArrayList<Boolean>> matrix, int[][] field){
+		for (int i = 0; i < supMat.get(0).get(0); i++) {
+			tempArr.add("" + i);
+		}
+
+		System.out.println();
+		for (int i = 0; i < supMat.size(); i++) {
+			solArr.add(tempArr.get(supMat.get(i).get(1)));
+			for (int j = supMat.get(i).size() - 1; j > 1; j--) {
+				tempArr.remove((int) supMat.get(i).get(j));
+			}
+		}
+
+		for (int i = 0; i < solArr.size(); i++) {
+			solRows.add(matrix.get(Integer.parseInt(solArr.get(i))));
+		}
+		wipeField(field);
+
+		for (int i = 0; i < solRows.size(); i++) {
+			int col = -1;
+			for (int j = 0; j < input.length; j++) {
+				if (solRows.get(i).get(j)) col = characterToID(input[j]);
+			}
+			for (int j = input.length; j < solRows.get(0).size(); j++) {
+				if (solRows.get(i).get(j)) {
+					int n = j - input.length;
+					int x = n % horizontalGridSize;
+					int y = (int) ((n / horizontalGridSize));
+					field[x][y] = col;
+				}
+			}
+		}
+		return field;
+	}
+
+	//randomize pentominoes in the field until you get a solution
 	private static void bruteForce( int[][] field){
 		Random random = new Random();
 		boolean solutionFound = false;
@@ -159,8 +169,6 @@ public class Search
 		}
 	}
 
-
-
 	// Adds a pentomino to the position on the field (overriding current board at that position)
 	private static void bruteForceAddPiece(int[][] field, int[][] piece, int pieceID, int x, int y)
 	{
@@ -208,13 +216,6 @@ public class Search
 		return pentID;
 	}
 
-	//TO DO
-	public static ArrayList<ArrayList<Node>> arrToDL(ArrayList<ArrayList<Boolean>> matrix){
-		Node header = new Node();
-		ArrayList<ArrayList<Node>> DLLMatrix=new ArrayList<ArrayList<Node>>();
-		return DLLMatrix;
-	}
-
 	// Adds a pentomino to the position on the field (overriding current board at that position)
 	public static int[][] addPiece(int[][] field, int[][] piece, int pieceID, int x, int y) {
 		int[][] matrix = new int[5][2];
@@ -237,15 +238,9 @@ public class Search
 		return matrix;
 	}
 
+	//turns the pentomino problem into an exact cover problem and solves it by iterating over the matrix of possible position of any pentomino
 	public static int algorithmX(ArrayList<ArrayList<Boolean>> matrix, ArrayList<ArrayList<Integer>> suppMat){
-
-		/*System.out.println("2");
-		for (int i = 0; i < matrix.size(); i++) {
-			System.out.println(Arrays.toString(matrix.get(i).toArray()));
-		}
-		System.out.println();*/
-
-		int minC=1000000;
+		int minC=12*30*8;
 		int sumC=0;
 		int indC=0;
 		int n=0;
@@ -374,10 +369,12 @@ public class Search
 		return algorithmX(matrix1,suppMat1);
 	}
 
+	//self explanatory
 	public static void deleteRow(int index, ArrayList<ArrayList<Boolean>> m){
 		m.remove(index);
 	}
 
+	//self explanatory
 	public static void deleteColumn(int index, ArrayList<ArrayList<Boolean>> m){
 		for (int i = 0; i < m.size(); i++) {
 			m.get(i).remove(index);
