@@ -7,18 +7,19 @@ import java.util.Random;
 
 public class Search
 {
-	public static final int horizontalGridSize = 6;
+	public static final int horizontalGridSize = 12;
 	public static final int verticalGridSize = 5;
 	public static ArrayList<ArrayList<Boolean>> algXreturn;
 	public static ArrayList<ArrayList<Integer>> supMat;
 	public static ArrayList<Integer> solutions= new ArrayList<>();
-	//public static final char[] input = {'P','X','F','V','W','Y','T','Z','U','N','L','I'};
-	public static final char[] input = {'T','W','Z','L','I','Y'};
+	public static final char[] input = {'P','X','F','V','W','Y','T','Z','U','N','L','I'};
+	//public static final char[] input = {'T','W','Z','L','I','Y'};
 	public static ArrayList<ArrayList<Boolean>> solRows = new ArrayList<ArrayList<Boolean>>();
 	public static ArrayList<String> tempArr= new ArrayList<>();
 	public static ArrayList<String> solArr= new ArrayList<>();
 	// Static UI class to display the board
 	public static UI ui = new UI(horizontalGridSize, verticalGridSize, 50);
+	public static boolean flag=false;
 
 	// Helper function which starts the brute force algorithm
 	public static void search() {
@@ -179,6 +180,7 @@ public class Search
 			}
 			System.out.println();
 			supMat=suppMat;
+			if(supMat.size()==(horizontalGridSize*verticalGridSize)/5)flag = true;
 			return 0;
 		} else {
 			//else look for the min sum column, "indC" is the index of this column
@@ -202,9 +204,11 @@ public class Search
 			} else {
 				//for every row where indC has a 1
 				b=0;
-				for (int r = 1; r < matrix.size() ; r++) {
-					if (matrix.get(r).get(indC)) {
-						b+=algorithmX(matrix,r,indC,suppMat);
+				if(!flag){
+					for (int r = 1; r < matrix.size() ; r++) {
+						if (matrix.get(r).get(indC)) {
+							b+=algorithmX(matrix,r,indC,suppMat);
+						}
 					}
 				}
 				return b;
