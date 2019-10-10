@@ -25,7 +25,7 @@ public class Search
 	//choose algorithm 0:bruteForce, 1:algorithmX
 	public static int chosenAlgorithm = 1;
 
-	// Helper function which starts the brute force algorithm
+	//Helper function which starts the brute force algorithm
 	public static void search() {
 		// Initialize an empty board
 		int[][] field = new int[horizontalGridSize][verticalGridSize];
