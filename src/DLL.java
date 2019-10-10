@@ -86,4 +86,21 @@ class Node {
 	public void incrementNodeCount(){
 		addToNodeCount(1);
 	}
+
+	public boolean hasLeft(){
+	    if(this.getLeft()!=null) return true;
+	    else return false;
+    }
+    public boolean hasRight(){
+        if(this.getRight()!=null) return true;
+        else return false;
+    }
+    public boolean hasUp(){
+        if(this.getUp()!=null) return true;
+        else return false;
+    }
+    public boolean hasDown(){
+        if(this.getDown()!=null) return true;
+        else return false;
+    }
 }
