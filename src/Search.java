@@ -9,7 +9,6 @@ public class Search
 {
 	public static final int horizontalGridSize = 12;
 	public static final int verticalGridSize = 3;
-
 	public static final char[] input = {'P','X','F','V','W','Y','T','Z','U','N','L','I'};
 
 	public static ArrayList<ArrayList<Integer>> supMat=new ArrayList<ArrayList<Integer>>();
@@ -27,6 +26,8 @@ public class Search
 
 	//Helper function which starts the brute force algorithm
 	public static void search() {
+
+
 		// Initialize an empty board
 		int[][] field = new int[horizontalGridSize][verticalGridSize];
 		int[][] solutionField = new int[horizontalGridSize][verticalGridSize];
@@ -91,7 +92,7 @@ public class Search
 	}
 
 	//randomize pentominoes in the field until you get a solution
-	private static void bruteForce( int[][] field){
+	private static void bruteForce(int[][] field){
 		Random random = new Random();
 		boolean solutionFound = false;
 
@@ -475,8 +476,10 @@ public class Search
 	// Main function. Needs to be executed to start the brute force algorithm
 	public static void main(String[] args)
 	{
-		search();
-		//System.out.println("The array is "+Arrays.toString(algXreturn.toArray()));
-		// I don't know how to convert back from the list to a grid representation :(
+		if((horizontalGridSize*verticalGridSize)%5==0) {
+			search();
+		} else {
+			System.out.println("no solution for this matrix");
+		}
 	}
 }
