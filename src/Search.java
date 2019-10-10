@@ -26,22 +26,11 @@ public class Search
 		// Initialize an empty board
 		int[][] field = new int[horizontalGridSize][verticalGridSize];
 		wipeField(field);
-		ArrayList<ArrayList<Boolean>> arl = new ArrayList<ArrayList<Boolean>>();
-		arl.add(new ArrayList<>(Arrays.asList(false, false, true, false, true, true, false)));
-		arl.add(new ArrayList<>(Arrays.asList(true, false, false, true, false, false, true)));
-		arl.add(new ArrayList<>(Arrays.asList(false, true, true, false, false, true, false)));
-		arl.add(new ArrayList<>(Arrays.asList(true, false, false, true, false, false, false)));
-		arl.add(new ArrayList<>(Arrays.asList(false, true, false, false, false, false, true)));
-		arl.add(new ArrayList<>(Arrays.asList(false, false, false, true, true, false, true)));
-
 		ArrayList<ArrayList<Boolean>> matrix = buildMatrix(field);
-
 		algorithmX(matrix, new ArrayList<ArrayList<Integer>>());
 
 		tempArr = new ArrayList<>();
 		solArr = new ArrayList<>();
-
-		System.out.println(Arrays.toString(supMat.toArray()));
 
 		/*System.out.println("supmat");
 		for (int i = 0; i < supMat.size(); i++) {
@@ -49,6 +38,7 @@ public class Search
 		}
 		System.out.println();*/
 		//supMat.remove(0);
+
 		for (int i = 0; i < supMat.get(0).get(0); i++) {
 			tempArr.add("" + i);
 		}
@@ -60,13 +50,9 @@ public class Search
 				tempArr.remove((int) supMat.get(i).get(j));
 			}
 		}
-		System.out.println();
-		System.out.println(Arrays.toString(solArr.toArray()));
-		System.out.println("asdf");
 
 		for (int i = 0; i < solArr.size(); i++) {
 			solRows.add(matrix.get(Integer.parseInt(solArr.get(i))));
-			System.out.println(Arrays.toString(solRows.get(i).toArray()));
 		}
 		wipeField(field);
 
@@ -80,22 +66,12 @@ public class Search
 					int n=j-input.length;
 					int x=n%horizontalGridSize;
 					int y=(int)((n/horizontalGridSize));
-					System.out.println(col+", "+j+", "+n+", "+x+", "+y);
 					field[x][y]=col;
 				}
 			}
 		}
-		for (int i = 0; i < field.length; i++) {
-			System.out.println(Arrays.toString(field[i]));
-		}
 
 		ui.setState(field);
-		System.out.println();
-		for (int i = 0; i < solArr.size(); i++) {
-			System.out.println(Arrays.toString(field[i]));
-		}
-		System.out.println();
-		System.out.println(matrix.size());
 	}
 	//takes the pentomino character and outputs the unique integer ID for it
 	private static int characterToID(char character) {
@@ -173,12 +149,6 @@ public class Search
 		int b=0;
 
 		if(matrix.size()==0||matrix.get(0).size()==1){
-			System.out.println("HOLY FUCK");
-			System.out.println("2");
-			for (int i = 0; i < matrix.size(); i++) {
-				System.out.println(Arrays.toString(matrix.get(i).toArray()));
-			}
-			System.out.println();
 			supMat=suppMat;
 			if(supMat.size()==(horizontalGridSize*verticalGridSize)/5)flag = true;
 			return 0;
