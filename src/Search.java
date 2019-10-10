@@ -3,125 +3,246 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
+
+
 public class Search
 {
-    public static final int horizontalGridSize = 10;
-    public static final int verticalGridSize = 6;
-    public static ArrayList<ArrayList<Boolean>> algXreturn;
-    public static final char[] input = {'P','X','F','V','W','Y','I','T','Z','U','N','L'};
+	public static final int horizontalGridSize = 6;
+	public static final int verticalGridSize = 5;
+	public static ArrayList<ArrayList<Boolean>> algXreturn;
+	public static ArrayList<ArrayList<Integer>> supMat;
+	public static ArrayList<Integer> solutions= new ArrayList<>();
+	public static final char[] input = {'T','W','Z','L','I','Y'};
+	public static ArrayList<String> tempArr= new ArrayList<>();
+	public static ArrayList<String> solArr= new ArrayList<>();
+	// Static UI class to display the board
+	//public static UI ui = new UI(horizontalGridSize, verticalGridSize, 50);
 
-    // Static UI class to display the board
-    public static UI ui = new UI(horizontalGridSize, verticalGridSize, 50);
-
-    // Helper function which starts the brute force algorithm
-    public static void search()
-    {
-        // Initialize an empty board
-        int[][] field = new int[horizontalGridSize][verticalGridSize];
+	// Helper function which starts the brute force algorithm
+	public static void search()
+	{
+		// Initialize an empty board
+		int[][] field = new int[horizontalGridSize][verticalGridSize];
 		wipeField(field);
-		algXreturn = algorithmX(buildMatrix(field),new ArrayList<>());
-    }
-    //takes the pentomino character and outputs the unique integer ID for it
-    private static int characterToID(char character) {
-    	int pentID = -1;
-    	if (character == 'X') {
-    		pentID = 0;
-    	} else if (character == 'I') {
-    		pentID = 1;
-    	} else if (character == 'Z') {
-    		pentID = 2;
-    	} else if (character == 'T') {
-    		pentID = 3;
-    	} else if (character == 'U') {
-    		pentID = 4;
-     	} else if (character == 'V') {
-     		pentID = 5;
-     	} else if (character == 'W') {
-     		pentID = 6;
-     	} else if (character == 'Y') {
-     		pentID = 7;
-    	} else if (character == 'L') {
-    		pentID = 8;
-    	} else if (character == 'P') {
-    		pentID = 9;
-    	} else if (character == 'N') {
-    		pentID = 10;
-    	} else if (character == 'F') {
-    		pentID = 11;
-    	}
-    	return pentID;
-    }
+		ArrayList<ArrayList<Boolean>> arl = new ArrayList<ArrayList<Boolean>>();
+		arl.add(new ArrayList<>(Arrays.asList(false,false,true,false,true,true,false)));
+		arl.add(new ArrayList<>(Arrays.asList(true,false,false,true,false,false,true)));
+		arl.add(new ArrayList<>(Arrays.asList(false,true,true,false,false,true,false)));
+		arl.add(new ArrayList<>(Arrays.asList(true,false,false,true,false,false,false)));
+		arl.add(new ArrayList<>(Arrays.asList(false,true,false,false,false,false,true)));
+		arl.add(new ArrayList<>(Arrays.asList(false,false,false,true,true,false,true)));
 
+		algorithmX(arl,new ArrayList<ArrayList<Integer>>());
 
+		tempArr= new ArrayList<>();
+		solArr= new ArrayList<>();
 
-    // Adds a pentomino to the position on the field (overriding current board at that position)
-    public static int[][] addPiece(int[][] field, int[][] piece, int pieceID, int x, int y) {
+		System.out.println(Arrays.toString(supMat.toArray()));
+
+		supMat.remove(0);
+		for(int i = 0; i < supMat.get(0).get(0); i++){
+			tempArr.add(""+i);
+		}
+
+		System.out.println();
+		for(int i = 0; i < supMat.size(); i++){
+			solArr.add(tempArr.get(supMat.get(i).get(1)));
+			for(int j = supMat.get(i).size()-1; j > 1; j--){
+				tempArr.remove((int)supMat.get(i).get(j));
+			}
+		}
+		System.out.println();
+		System.out.println(Arrays.toString(solArr.toArray()));
+	}
+	//takes the pentomino character and outputs the unique integer ID for it
+	private static int characterToID(char character) {
+		int pentID = -1;
+		if (character == 'X') {
+			pentID = 0;
+		} else if (character == 'I') {
+			pentID = 1;
+		} else if (character == 'Z') {
+			pentID = 2;
+		} else if (character == 'T') {
+			pentID = 3;
+		} else if (character == 'U') {
+			pentID = 4;
+		} else if (character == 'V') {
+			pentID = 5;
+		} else if (character == 'W') {
+			pentID = 6;
+		} else if (character == 'Y') {
+			pentID = 7;
+		} else if (character == 'L') {
+			pentID = 8;
+		} else if (character == 'P') {
+			pentID = 9;
+		} else if (character == 'N') {
+			pentID = 10;
+		} else if (character == 'F') {
+			pentID = 11;
+		}
+		return pentID;
+	}
+
+	//TO DO:
+	public static ArrayList<ArrayList<Node>> arrToDL(ArrayList<ArrayList<Boolean>> matrix){
+		Node header = new Node();
+		ArrayList<ArrayList<Node>> DLLMatrix=new ArrayList<ArrayList<Node>>();
+		return DLLMatrix;
+	}
+
+	// Adds a pentomino to the position on the field (overriding current board at that position)
+	public static int[][] addPiece(int[][] field, int[][] piece, int pieceID, int x, int y) {
 		int[][] matrix = new int[5][2];
 		int n=0;
-        for(int i = 0; i < piece.length; i++) // loop over x position of pentomino
-        {
-            for (int j = 0; j < piece[i].length; j++) // loop over y position of pentomino
-            {
-                if (piece[i][j] == 1)
-                {
-                    // Add the ID of the pentomino to the board if the pentomino occupies this square
-                    field[x + i][y + j] = pieceID;
-                    matrix[n][0]=x + i;
+		for(int i = 0; i < piece.length; i++) // loop over x position of pentomino
+		{
+			for (int j = 0; j < piece[i].length; j++) // loop over y position of pentomino
+			{
+				if (piece[i][j] == 1)
+				{
+					// Add the ID of the pentomino to the board if the pentomino occupies this square
+					field[x + i][y + j] = pieceID;
+					matrix[n][0]=x + i;
 					matrix[n][1]=y + j;
-                    n++;
-                }
-            }
-        }
+					n++;
+				}
+			}
+		}
 
 		return matrix;
-    }
+	}
 
-    //takes the possibilities matrix and outputs a solution for that matrix
-	public static ArrayList<ArrayList<Boolean>> algorithmX(ArrayList<ArrayList<Boolean>> matrix, ArrayList<ArrayList<Boolean>> sol){
+	public static int algorithmX(ArrayList<ArrayList<Boolean>> matrix, ArrayList<ArrayList<Integer>> suppMat){
+
+		/*System.out.println("start of ax0");
+		for (int i = 0; i < matrix.size(); i++) {
+			System.out.println(Arrays.toString(matrix.get(i).toArray()));
+		}
+		System.out.println();*/
+
 		int minC=1000000;
 		int sumC=0;
 		int indC=0;
 		int n=0;
+		int smallSum=0;
+		int b=0;
 
-		if(matrix.get(0).size()==0){
-			return sol;
-		}
-		for (int i = 0; i < matrix.get(0).size(); i++) {
-			n=0;
-			for (int j = 0; j < matrix.size(); j++) {
-				if(matrix.get(j).get(i)) {
-					sumC++;
+		if(matrix.size()==0){
+
+			System.out.println("HOLY FUCK");
+			return 0;
+		} else {
+			//else look for the min sum column, "indC" is the index of this column
+			for (int i = 0; i < matrix.get(0).size(); i++) {
+				n = 0;
+				for (int j = 0; j < matrix.size(); j++) {
+					if (matrix.get(j).get(i)) {
+						sumC++;
+					}
+					n++;
 				}
-				n++;
+				if (sumC < minC) {
+					minC = sumC;
+					indC = i;
+				}
+				sumC = 0;
 			}
-			if(sumC<minC){
-				minC=sumC;
-				indC=i;
-				System.out.println(sumC+", "+indC);
+
+			if (minC == 0) {
+				return 1;
+			} else {
+				//for every row where indC has a 1
+				b=0;
+				for (int r = 0; r < matrix.size() ; r++) {
+					if (matrix.get(r).get(indC)) {
+						b+=algorithmX(matrix,r,indC,suppMat);
+					}
+				}
+				if (b==0){
+					System.out.println("part");
+					for (int i = 0; i < matrix.size(); i++) {
+						System.out.println(Arrays.toString(matrix.get(i).toArray()));
+					}
+					System.out.println();
+					supMat=suppMat;
+					//solutions.add((r));
+				}
+				return b;
 			}
-			sumC=0;
+		}
+	}
+
+
+
+	//takes the possibilities matrix and outputs a solution for that matrix
+	public static int algorithmX(ArrayList<ArrayList<Boolean>> matrix,int row,int col, ArrayList<ArrayList<Integer>> suppMat) {
+
+		ArrayList<Integer> rowDel = new ArrayList<>();
+		ArrayList<Integer> colDel = new ArrayList<>();
+		rowDel = new ArrayList<>();
+		colDel = new ArrayList<>();
+		//for every row where indC has a 1
+		ArrayList<ArrayList<Boolean>> matrix1 = new ArrayList<ArrayList<Boolean>>();
+		for (int i = 0; i < matrix.size(); i++) {
+			ArrayList<Boolean> n = new ArrayList<>();
+			for (int j = 0; j < matrix.get(i).size(); j++) {
+				n.add(matrix.get(i).get(j));
+			}
+			matrix1.add(n);
 		}
 
-		for (int r = 0; r < matrix.size()-1; r++) {
-			if(matrix.get(r).get(indC)){
-				sol=new ArrayList<>(sol);
-				sol.add(matrix.get(r));
-				for(int j=0;j<matrix.get(r).size()-1;j++){
-				    if(matrix.get(r).get(j)){
-				        for(int i=0;i<matrix.size()-1;i++){
-				            if(matrix.get(i).get(j)){
-				                matrix.remove(i);
-                            }
-                        }
-				        for(int i=0;i<matrix.size()-1;i++) {
-                            matrix.get(i).remove(j);
-                        }
-                    }
-                }
-				return algorithmX(matrix, sol);
+
+		/*For each column j such that Ar, j = 1,
+		for each row i such that Ai, j = 1,
+		delete row i from matrix A.
+		delete column j from matrix A.*/
+
+		for (int j = 0; j < matrix.get(0).size(); j++) {
+			for (int i = 0; i < matrix.size(); i++) {
+				if (matrix.get(row).get(i)) {
+					colDel.add(i);
+					if (matrix.get(j).get(i)) {
+						rowDel.add(j);
+					}
+				}
 			}
 		}
-		return sol;
+
+		for (int i = rowDel.size() - 1; i > -1; i--) {
+			int rowN = rowDel.get(i);
+			deleteRow(rowN, matrix1);
+		}
+
+		for (int i = colDel.size()-1; i > -1; i--) {
+			int colN = colDel.get(i);
+			deleteColumn(colN, matrix1);
+		}
+
+		/*System.out.println("2");
+		for (int i = 0; i < matrix.size(); i++) {
+			System.out.println(Arrays.toString(matrix.get(i).toArray()));
+		}
+		System.out.println();*/
+		ArrayList<Integer> sm=new ArrayList<Integer>();
+		sm.add(matrix.size());
+		sm.add(row);
+		for (int i = 0; i < rowDel.size(); i++) {
+			sm.add(rowDel.get(i));
+		}
+		suppMat.add(sm);
+		return algorithmX(matrix1,suppMat);
+	}
+
+	public static void deleteRow(int index, ArrayList<ArrayList<Boolean>> m){
+		m.remove(index);
+	}
+
+	public static void deleteColumn(int index, ArrayList<ArrayList<Boolean>> m){
+		for (int i = 0; i < m.size(); i++) {
+			m.get(i).remove(index);
+		}
 	}
 
 	//sets all squares in the field to -1
@@ -200,11 +321,11 @@ public class Search
 		return list;
 	}
 
-    // Main function. Needs to be executed to start the brute force algorithm
-    public static void main(String[] args)
-    {
-        search();
-        System.out.println("The array is "+Arrays.toString(algXreturn.toArray()));
-        // I don't know how to convert back from the list to a grid representation :(
-    }
+	// Main function. Needs to be executed to start the brute force algorithm
+	public static void main(String[] args)
+	{
+		search();
+		//System.out.println("The array is "+Arrays.toString(algXreturn.toArray()));
+		// I don't know how to convert back from the list to a grid representation :(
+	}
 }
