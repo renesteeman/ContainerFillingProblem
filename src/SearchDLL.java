@@ -65,7 +65,7 @@ public class SearchDLL
         header.setRight(header);
         //creating a working node so that we don't have to track back to header every time
         Node workingNode = header;
-        for(int i=0;i<matrix.get(0).size();i++){
+        for(int j=0;j<matrix.get(0).size();j++){
             //adding a new column node
             workingNode.setRight(new Node());
             workingNode.getRight().setLeft(workingNode);
@@ -73,8 +73,8 @@ public class SearchDLL
             workingNode.setRight(header);
             //saving it as a column node for reference in the internal for loop
             Node columnNode = workingNode;
-            for(int j=0;j<matrix.size();j++){
-                if(matrix.get(j).get(i)){
+            for(int i=0;i<matrix.size();i++){
+                if(matrix.get(i).get(j)){
                     //if there is a 1/true in the matrix, adding a new node below the column node and entering it
                     workingNode.setDown(new Node());
                     workingNode.getDown().setUp(workingNode);
