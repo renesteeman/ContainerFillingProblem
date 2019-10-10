@@ -3,14 +3,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
-
-
 public class Search
 {
-	public static final int horizontalGridSize = 12;
-	public static final int verticalGridSize = 3;
-	public static final char[] input = {'P','X','F','V','W','Y','T','Z','U','N','L','I'};
-
+	public static final int horizontalGridSize = 6;
+	public static final int verticalGridSize = 5;
+	//public static final char[] input = {'P','X','F','V','W','Y','T','Z','U','N','L','I'};
+	public static final char[] input = {'W','Y','T','Z','L','I'};
 	public static ArrayList<ArrayList<Integer>> supMat=new ArrayList<ArrayList<Integer>>();
 	public static ArrayList<ArrayList<Boolean>> solRows = new ArrayList<ArrayList<Boolean>>();
 	public static ArrayList<String> tempArr= new ArrayList<>();
@@ -476,7 +474,7 @@ public class Search
 	// Main function. Needs to be executed to start the brute force algorithm
 	public static void main(String[] args)
 	{
-		if((horizontalGridSize*verticalGridSize)%5==0) {
+		if((horizontalGridSize*verticalGridSize)%5==0&&input.length==(horizontalGridSize*verticalGridSize)/5) {
 			search();
 		} else {
 			System.out.println("no solution for this matrix");
