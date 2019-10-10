@@ -87,3 +87,4 @@ bin/sample/sample.fxml
 
 # I think some Mac stuff #
 .DS_Store
+/.idea/
