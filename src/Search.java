@@ -12,33 +12,33 @@ public class Search
 	public static ArrayList<ArrayList<Boolean>> algXreturn;
 	public static ArrayList<ArrayList<Integer>> supMat;
 	public static ArrayList<Integer> solutions= new ArrayList<>();
+	//public static final char[] input = {'P','X','F','V','W','Y','T','Z','U','N','L','I'};
 	public static final char[] input = {'T','W','Z','L','I','Y'};
-
+	public static ArrayList<ArrayList<Boolean>> solRows = new ArrayList<ArrayList<Boolean>>();
 	public static ArrayList<String> tempArr= new ArrayList<>();
 	public static ArrayList<String> solArr= new ArrayList<>();
 	// Static UI class to display the board
 	public static UI ui = new UI(horizontalGridSize, verticalGridSize, 50);
 
 	// Helper function which starts the brute force algorithm
-	public static void search()
-	{
+	public static void search() {
 		// Initialize an empty board
 		int[][] field = new int[horizontalGridSize][verticalGridSize];
 		wipeField(field);
 		ArrayList<ArrayList<Boolean>> arl = new ArrayList<ArrayList<Boolean>>();
-		arl.add(new ArrayList<>(Arrays.asList(false,false,true,false,true,true,false)));
-		arl.add(new ArrayList<>(Arrays.asList(true,false,false,true,false,false,true)));
-		arl.add(new ArrayList<>(Arrays.asList(false,true,true,false,false,true,false)));
-		arl.add(new ArrayList<>(Arrays.asList(true,false,false,true,false,false,false)));
-		arl.add(new ArrayList<>(Arrays.asList(false,true,false,false,false,false,true)));
-		arl.add(new ArrayList<>(Arrays.asList(false,false,false,true,true,false,true)));
+		arl.add(new ArrayList<>(Arrays.asList(false, false, true, false, true, true, false)));
+		arl.add(new ArrayList<>(Arrays.asList(true, false, false, true, false, false, true)));
+		arl.add(new ArrayList<>(Arrays.asList(false, true, true, false, false, true, false)));
+		arl.add(new ArrayList<>(Arrays.asList(true, false, false, true, false, false, false)));
+		arl.add(new ArrayList<>(Arrays.asList(false, true, false, false, false, false, true)));
+		arl.add(new ArrayList<>(Arrays.asList(false, false, false, true, true, false, true)));
 
-		ArrayList<ArrayList<Boolean>> matrix=buildMatrix(field);
+		ArrayList<ArrayList<Boolean>> matrix = buildMatrix(field);
 
-		algorithmX(matrix,new ArrayList<ArrayList<Integer>>());
+		algorithmX(matrix, new ArrayList<ArrayList<Integer>>());
 
-		tempArr= new ArrayList<>();
-		solArr= new ArrayList<>();
+		tempArr = new ArrayList<>();
+		solArr = new ArrayList<>();
 
 		System.out.println(Arrays.toString(supMat.toArray()));
 
@@ -48,22 +48,52 @@ public class Search
 		}
 		System.out.println();*/
 		//supMat.remove(0);
-		for(int i = 0; i < supMat.get(0).get(0); i++){
-			tempArr.add(""+i);
+		for (int i = 0; i < supMat.get(0).get(0); i++) {
+			tempArr.add("" + i);
 		}
 
 		System.out.println();
-		for(int i = 0; i < supMat.size(); i++){
+		for (int i = 0; i < supMat.size(); i++) {
 			solArr.add(tempArr.get(supMat.get(i).get(1)));
-			for(int j = supMat.get(i).size()-1; j > 1; j--){
-				tempArr.remove((int)supMat.get(i).get(j));
+			for (int j = supMat.get(i).size() - 1; j > 1; j--) {
+				tempArr.remove((int) supMat.get(i).get(j));
 			}
 		}
 		System.out.println();
 		System.out.println(Arrays.toString(solArr.toArray()));
-		for(int i = 0; i < solArr.size(); i++){
-			System.out.println(matrix.get(Integer.parseInt(solArr.get(i))));
+		System.out.println("asdf");
+
+		for (int i = 0; i < solArr.size(); i++) {
+			solRows.add(matrix.get(Integer.parseInt(solArr.get(i))));
+			System.out.println(Arrays.toString(solRows.get(i).toArray()));
 		}
+		wipeField(field);
+
+		for (int i = 0; i < solRows.size(); i++) {
+			int col=-2;
+			for (int j = 0; j < input.length; j++) {
+				if(solRows.get(i).get(j)) col=characterToID(input[j]);
+			}
+			for (int j = input.length; j < solRows.get(0).size(); j++) {
+				if(solRows.get(i).get(j)){
+					int n=j-input.length;
+					int x=n%horizontalGridSize;
+					int y=(int)((n/horizontalGridSize));
+					System.out.println(col+", "+j+", "+n+", "+x+", "+y);
+					field[x][y]=col;
+				}
+			}
+		}
+		for (int i = 0; i < field.length; i++) {
+			System.out.println(Arrays.toString(field[i]));
+		}
+
+		ui.setState(field);
+		System.out.println();
+		for (int i = 0; i < solArr.size(); i++) {
+			System.out.println(Arrays.toString(field[i]));
+		}
+		System.out.println();
 		System.out.println(matrix.size());
 	}
 	//takes the pentomino character and outputs the unique integer ID for it
@@ -172,7 +202,7 @@ public class Search
 			} else {
 				//for every row where indC has a 1
 				b=0;
-				for (int r = 0; r < matrix.size() ; r++) {
+				for (int r = 1; r < matrix.size() ; r++) {
 					if (matrix.get(r).get(indC)) {
 						b+=algorithmX(matrix,r,indC,suppMat);
 					}
