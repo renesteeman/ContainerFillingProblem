@@ -61,7 +61,8 @@ public class SearchDLL
     //TO DO
     public static Node arrToDL(ArrayList<ArrayList<Boolean>> matrix){
         Node header = new Node();
-
+        header.setLeft(header);
+        header.setRight(header);
         //creating a working node so that we don't have to track back to header every time
         Node workingNode = header;
         for(int i=0;i<matrix.get(0).size();i++){
@@ -69,6 +70,7 @@ public class SearchDLL
             workingNode.setRight(new Node());
             workingNode.getRight().setLeft(workingNode);
             workingNode=workingNode.getRight();
+            workingNode.setRight(header);
             //saving it as a column node for reference in the internal for loop
             Node columnNode = workingNode;
             for(int j=0;j<matrix.size();j++){
@@ -77,26 +79,31 @@ public class SearchDLL
                     workingNode.setDown(new Node());
                     workingNode.getDown().setUp(workingNode);
                     workingNode=workingNode.getDown();
+                    workingNode.setColID(j);
+                    workingNode.setRowID(i);
                     workingNode.setColumn(columnNode);
+                    workingNode.setDown(columnNode);
                     columnNode.incrementNodeCount();
+                    columnNode.setUp(workingNode);
                 }
             }
             //getting back to the column node
-            if(workingNode.hasColumn())
-                workingNode=workingNode.getColumn();
+            workingNode=columnNode;
         }
         return header;
     }
 
     public static void dancingWithTheMoonlight(Node header){
         ArrayList<Node> solutions=new ArrayList<>();
-        if(header.getRight() == header){
+        if(header.getRight().equals(header)){
             System.out.println(solutions);
             return;
         }
-            Node column=cover(getMinColumn(header));
-            Node row=column.getDown();
+            Node column=getMinColumn(header);
+            cover(column);
+            Node row=column;
             while(row.hasDown()){
+                row=row.getDown();
                 solutions.add(row);
                 Node right = row;
                 while(right.hasRight()){
@@ -109,7 +116,7 @@ public class SearchDLL
                 Node left = row;
                 while(left.hasLeft()){
                     left=row.getLeft();
-                    left = uncover(left);
+                    left=uncover(left);
                 }
             }
         column=uncover(column);
@@ -262,6 +269,7 @@ public class SearchDLL
     public static void main(String[] args)
     {
         search();
+        return;
         //System.out.println("The array is "+Arrays.toString(algXreturn.toArray()));
         // I don't know how to convert back from the list to a grid representation :(
     }
