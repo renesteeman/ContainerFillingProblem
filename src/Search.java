@@ -9,70 +9,174 @@ public class Search
 {
 	public static final int horizontalGridSize = 12;
 	public static final int verticalGridSize = 5;
-	public static ArrayList<ArrayList<Boolean>> algXreturn;
 	public static ArrayList<ArrayList<Integer>> supMat;
-	public static ArrayList<Integer> solutions= new ArrayList<>();
 	public static final char[] input = {'P','X','F','V','W','Y','T','Z','U','N','L','I'};
-	//public static final char[] input = {'T','W','Z','L','I','Y'};
 	public static ArrayList<ArrayList<Boolean>> solRows = new ArrayList<ArrayList<Boolean>>();
 	public static ArrayList<String> tempArr= new ArrayList<>();
 	public static ArrayList<String> solArr= new ArrayList<>();
 	// Static UI class to display the board
 	public static UI ui = new UI(horizontalGridSize, verticalGridSize, 50);
 	public static boolean flag=false;
+	public static int chosenAlgorithm = 1;
 
 	// Helper function which starts the brute force algorithm
 	public static void search() {
 		// Initialize an empty board
 		int[][] field = new int[horizontalGridSize][verticalGridSize];
 		wipeField(field);
-		ArrayList<ArrayList<Boolean>> matrix = buildMatrix(field);
-		algorithmX(matrix, new ArrayList<ArrayList<Integer>>());
 
-		tempArr = new ArrayList<>();
-		solArr = new ArrayList<>();
+		//do the bruteforce
+		if(chosenAlgorithm==0){
+			bruteForce(field);
+		}
+
+		//do AlgorithmX
+		if(chosenAlgorithm==1) {
+			ArrayList<ArrayList<Boolean>> matrix = buildMatrix(field);
+			algorithmX(matrix, new ArrayList<ArrayList<Integer>>());
+
+			tempArr = new ArrayList<>();
+			solArr = new ArrayList<>();
 
 		/*System.out.println("supmat");
 		for (int i = 0; i < supMat.size(); i++) {
 			System.out.println(Arrays.toString(supMat.get(i).toArray()));
 		}
 		System.out.println();*/
-		//supMat.remove(0);
+			//supMat.remove(0);
 
-		for (int i = 0; i < supMat.get(0).get(0); i++) {
-			tempArr.add("" + i);
+			for (int i = 0; i < supMat.get(0).get(0); i++) {
+				tempArr.add("" + i);
+			}
+
+			System.out.println();
+			for (int i = 0; i < supMat.size(); i++) {
+				solArr.add(tempArr.get(supMat.get(i).get(1)));
+				for (int j = supMat.get(i).size() - 1; j > 1; j--) {
+					tempArr.remove((int) supMat.get(i).get(j));
+				}
+			}
+
+			for (int i = 0; i < solArr.size(); i++) {
+				solRows.add(matrix.get(Integer.parseInt(solArr.get(i))));
+			}
+			wipeField(field);
+
+			for (int i = 0; i < solRows.size(); i++) {
+				int col = -2;
+				for (int j = 0; j < input.length; j++) {
+					if (solRows.get(i).get(j)) col = characterToID(input[j]);
+				}
+				for (int j = input.length; j < solRows.get(0).size(); j++) {
+					if (solRows.get(i).get(j)) {
+						int n = j - input.length;
+						int x = n % horizontalGridSize;
+						int y = (int) ((n / horizontalGridSize));
+						field[x][y] = col;
+					}
+				}
+			}
+
+			ui.setState(field);
 		}
+	}
 
-		System.out.println();
-		for (int i = 0; i < supMat.size(); i++) {
-			solArr.add(tempArr.get(supMat.get(i).get(1)));
-			for (int j = supMat.get(i).size() - 1; j > 1; j--) {
-				tempArr.remove((int) supMat.get(i).get(j));
+	private static void bruteForce( int[][] field){
+		Random random = new Random();
+		boolean solutionFound = false;
+
+		while (!solutionFound) {
+			solutionFound = true;
+
+			//Empty board again to find a solution
+			for (int i = 0; i < field.length; i++) {
+				for (int j = 0; j < field[i].length; j++) {
+					field[i][j] = -1;
+				}
+			}
+
+
+			//Put all pentominoes with random rotation/inversion on a random position on the board
+			for (int i = 0; i < input.length; i++) {
+
+				//Choose a pentomino and randomly rotate/inverse it
+				int pentID = characterToID(input[i]);
+				int mutation = random.nextInt(PentominoDatabase.data[pentID].length);
+				int[][] pieceToPlace = PentominoDatabase.data[pentID][mutation];
+
+				//Randomly generate a position to put the pentomino on the board
+				int x;
+				int y;
+				if (horizontalGridSize < pieceToPlace.length) {
+					//this particular rotation of the piece is too long for the field
+					x=-1;
+				} else if (horizontalGridSize == pieceToPlace.length) {
+					//this particular rotation of the piece fits perfectly into the width of the field
+					x = 0;
+				} else {
+					//there are multiple possibilities where to place the piece without leaving the field
+					x = random.nextInt(horizontalGridSize-pieceToPlace.length+1);
+				}
+
+				if (verticalGridSize < pieceToPlace[0].length) {
+					//this particular rotation of the piece is too high for the field
+					y=-1;
+				} else if (verticalGridSize == pieceToPlace[0].length) {
+					//this particular rotation of the piece fits perfectly into the height of the field
+					y = 0;
+				} else {
+					//there are multiple possibilities where to place the piece without leaving the field
+					y = random.nextInt(verticalGridSize-pieceToPlace[0].length+1);
+				}
+
+				//If there is a possibility to place the piece on the field, do it
+				if (x >= 0 && y >= 0) {
+					bruteForceAddPiece(field, pieceToPlace, pentID, x, y);
+				}
+			}
+
+
+			for (int i = 0; i < field.length; i++) {
+				for (int j = 0; j < field[i].length; j++) {
+					if(field[i][j] == -1) solutionFound = false;
+				}
+			}
+
+			try{
+				Thread.sleep(200);
+				ui.setState(field);
+				//	System.out.println("Solution found");
+			} catch (InterruptedException ie){
+				//display the field
+				System.out.println("Solution not found");
+				break;
+			}
+			if (solutionFound) {
+				ui.setState(field);
+				System.out.println("Solution found");
+				break;
 			}
 		}
+	}
 
-		for (int i = 0; i < solArr.size(); i++) {
-			solRows.add(matrix.get(Integer.parseInt(solArr.get(i))));
-		}
-		wipeField(field);
 
-		for (int i = 0; i < solRows.size(); i++) {
-			int col=-2;
-			for (int j = 0; j < input.length; j++) {
-				if(solRows.get(i).get(j)) col=characterToID(input[j]);
-			}
-			for (int j = input.length; j < solRows.get(0).size(); j++) {
-				if(solRows.get(i).get(j)){
-					int n=j-input.length;
-					int x=n%horizontalGridSize;
-					int y=(int)((n/horizontalGridSize));
-					field[x][y]=col;
+
+	// Adds a pentomino to the position on the field (overriding current board at that position)
+	private static void bruteForceAddPiece(int[][] field, int[][] piece, int pieceID, int x, int y)
+	{
+		for(int i = 0; i < piece.length; i++) // loop over x position of pentomino
+		{
+			for (int j = 0; j < piece[i].length; j++) // loop over y position of pentomino
+			{
+				if (piece[i][j] == 1)
+				{
+					// Add the ID of the pentomino to the board if the pentomino occupies this square
+					field[x + i][y + j] = pieceID;
 				}
 			}
 		}
-
-		ui.setState(field);
 	}
+
 	//takes the pentomino character and outputs the unique integer ID for it
 	private static int characterToID(char character) {
 		int pentID = -1;
