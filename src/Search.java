@@ -13,10 +13,11 @@ public class Search
 	public static ArrayList<ArrayList<Integer>> supMat;
 	public static ArrayList<Integer> solutions= new ArrayList<>();
 	public static final char[] input = {'T','W','Z','L','I','Y'};
+
 	public static ArrayList<String> tempArr= new ArrayList<>();
 	public static ArrayList<String> solArr= new ArrayList<>();
 	// Static UI class to display the board
-	//public static UI ui = new UI(horizontalGridSize, verticalGridSize, 50);
+	public static UI ui = new UI(horizontalGridSize, verticalGridSize, 50);
 
 	// Helper function which starts the brute force algorithm
 	public static void search()
@@ -32,14 +33,21 @@ public class Search
 		arl.add(new ArrayList<>(Arrays.asList(false,true,false,false,false,false,true)));
 		arl.add(new ArrayList<>(Arrays.asList(false,false,false,true,true,false,true)));
 
-		algorithmX(arl,new ArrayList<ArrayList<Integer>>());
+		ArrayList<ArrayList<Boolean>> matrix=buildMatrix(field);
+
+		algorithmX(matrix,new ArrayList<ArrayList<Integer>>());
 
 		tempArr= new ArrayList<>();
 		solArr= new ArrayList<>();
 
 		System.out.println(Arrays.toString(supMat.toArray()));
 
-		supMat.remove(0);
+		/*System.out.println("supmat");
+		for (int i = 0; i < supMat.size(); i++) {
+			System.out.println(Arrays.toString(supMat.get(i).toArray()));
+		}
+		System.out.println();*/
+		//supMat.remove(0);
 		for(int i = 0; i < supMat.get(0).get(0); i++){
 			tempArr.add(""+i);
 		}
@@ -53,6 +61,10 @@ public class Search
 		}
 		System.out.println();
 		System.out.println(Arrays.toString(solArr.toArray()));
+		for(int i = 0; i < solArr.size(); i++){
+			System.out.println(matrix.get(Integer.parseInt(solArr.get(i))));
+		}
+		System.out.println(matrix.size());
 	}
 	//takes the pentomino character and outputs the unique integer ID for it
 	private static int characterToID(char character) {
@@ -116,7 +128,7 @@ public class Search
 
 	public static int algorithmX(ArrayList<ArrayList<Boolean>> matrix, ArrayList<ArrayList<Integer>> suppMat){
 
-		/*System.out.println("start of ax0");
+		/*System.out.println("2");
 		for (int i = 0; i < matrix.size(); i++) {
 			System.out.println(Arrays.toString(matrix.get(i).toArray()));
 		}
@@ -129,9 +141,14 @@ public class Search
 		int smallSum=0;
 		int b=0;
 
-		if(matrix.size()==0){
-
+		if(matrix.size()==0||matrix.get(0).size()==1){
 			System.out.println("HOLY FUCK");
+			System.out.println("2");
+			for (int i = 0; i < matrix.size(); i++) {
+				System.out.println(Arrays.toString(matrix.get(i).toArray()));
+			}
+			System.out.println();
+			supMat=suppMat;
 			return 0;
 		} else {
 			//else look for the min sum column, "indC" is the index of this column
@@ -160,15 +177,6 @@ public class Search
 						b+=algorithmX(matrix,r,indC,suppMat);
 					}
 				}
-				if (b==0){
-					System.out.println("part");
-					for (int i = 0; i < matrix.size(); i++) {
-						System.out.println(Arrays.toString(matrix.get(i).toArray()));
-					}
-					System.out.println();
-					supMat=suppMat;
-					//solutions.add((r));
-				}
 				return b;
 			}
 		}
@@ -193,46 +201,69 @@ public class Search
 			matrix1.add(n);
 		}
 
-
-		/*For each column j such that Ar, j = 1,
-		for each row i such that Ai, j = 1,
-		delete row i from matrix A.
-		delete column j from matrix A.*/
-
-		for (int j = 0; j < matrix.get(0).size(); j++) {
-			for (int i = 0; i < matrix.size(); i++) {
-				if (matrix.get(row).get(i)) {
-					colDel.add(i);
-					if (matrix.get(j).get(i)) {
-						rowDel.add(j);
+		for (int i = 0; i < matrix.size(); i++) {
+			for (int j = 0; j < matrix.get(0).size(); j++) {
+				if(matrix.get(i).get(j)) {
+					if (i==row&&!colDel.contains(j)) {
+						colDel.add(j);
+					}
+					if (matrix.get(row).get(j)&&!rowDel.contains(i)) {
+						rowDel.add(i);
 					}
 				}
 			}
 		}
 
-		for (int i = rowDel.size() - 1; i > -1; i--) {
-			int rowN = rowDel.get(i);
-			deleteRow(rowN, matrix1);
+		/*System.out.println("2");
+		for (int i = 0; i < matrix1.size(); i++) {
+			System.out.println(Arrays.toString(matrix.get(i).toArray()));
 		}
+		System.out.println();
+		System.out.println(Arrays.toString(rowDel.toArray()));*/
+		if(rowDel.size()==matrix1.size()&&colDel.size()!=matrix1.get(0).size()){
+			matrix1 = new ArrayList<ArrayList<Boolean>>();
+			matrix1.add(new ArrayList<>(Arrays.asList(false,true)));
+		} else {
+			for (int i = rowDel.size() - 1; i > -1; i--) {
+				int rowN = rowDel.get(i);
+				deleteRow(rowN, matrix1);
+			}
 
-		for (int i = colDel.size()-1; i > -1; i--) {
-			int colN = colDel.get(i);
-			deleteColumn(colN, matrix1);
+			for (int i = colDel.size() - 1; i > -1; i--) {
+				int colN = colDel.get(i);
+				deleteColumn(colN, matrix1);
+			}
 		}
-
 		/*System.out.println("2");
 		for (int i = 0; i < matrix.size(); i++) {
 			System.out.println(Arrays.toString(matrix.get(i).toArray()));
 		}
 		System.out.println();*/
+
 		ArrayList<Integer> sm=new ArrayList<Integer>();
 		sm.add(matrix.size());
 		sm.add(row);
 		for (int i = 0; i < rowDel.size(); i++) {
 			sm.add(rowDel.get(i));
 		}
-		suppMat.add(sm);
-		return algorithmX(matrix1,suppMat);
+
+		ArrayList<ArrayList<Integer>> suppMat1 = new ArrayList<ArrayList<Integer>>();
+		for (int i = 0; i < suppMat.size(); i++) {
+			ArrayList<Integer> n = new ArrayList<>();
+			for (int j = 0; j < suppMat.get(i).size(); j++) {
+				n.add(suppMat.get(i).get(j));
+			}
+			suppMat1.add(n);
+		}
+
+		/*System.out.println("s0");
+		for (int i = 0; i < suppMat.size(); i++) {
+			System.out.println(Arrays.toString(suppMat.get(i).toArray()));
+		}
+		System.out.println();*/
+
+		suppMat1.add(sm);
+		return algorithmX(matrix1,suppMat1);
 	}
 
 	public static void deleteRow(int index, ArrayList<ArrayList<Boolean>> m){
@@ -256,7 +287,8 @@ public class Search
 
 	//returns a matrix with all possible positions for all pentominoes in the grid
 	public static ArrayList<ArrayList<Boolean>> buildMatrix(int[][] field) {
-		boolean[][] matrix = new boolean[10000][(horizontalGridSize*verticalGridSize)+12];
+		int pentN=input.length;
+		boolean[][] matrix = new boolean[10000][(horizontalGridSize*verticalGridSize)+pentN];
 		int[][] onePos;
 		int pentID = 0;
 		int mutation = 0;
@@ -265,12 +297,19 @@ public class Search
 		int row = 0;
 		int n=0;
 		//for every pentomino
+		int[]map=new int[12];
+		for (int i = 0; i < input.length; i++) {
+			map[characterToID(input[i])]=n;
+			n++;
+		}
+
 		for (int i = 0; i < input.length; i++) {
 			pentID = characterToID(input[i]);
 			//for every mutation
 			for (int j = 0; j < PentominoDatabase.data[pentID].length; j++) {
 				mutation = j;
 				pieceToPlace = PentominoDatabase.data[pentID][mutation];
+				wipeField(field);
 				for (int k = 0; k < field.length; k++) {
 					for (int l = 0; l < field[k].length; l++) {
 						x = k;
@@ -295,9 +334,9 @@ public class Search
 						if (x >= 0 && y >= 0) {
 							onePos = addPiece(field, pieceToPlace, pentID, x, y);
 							for (int w = 0; w < onePos.length; w++) {
-								matrix[row][12 + onePos[w][0] + (onePos[w][1] * horizontalGridSize)] = true;
+								matrix[row][pentN + onePos[w][0] + (onePos[w][1] * horizontalGridSize)] = true;
 							}
-							matrix[row][pentID] = true;
+							matrix[row][map[pentID]] = true;
 							wipeField(field);
 							row++;
 						}
@@ -305,7 +344,13 @@ public class Search
 				}
 			}
 		}
-
+		/*System.out.println("matrix");
+		for (int i = 0; i < matrix.length; i++) {
+			System.out.println(Arrays.toString(matrix[i]));
+		}
+		System.out.println();
+		System.out.println();
+		System.out.println();*/
 		Boolean[][] matrix1=new Boolean[matrix.length][matrix[0].length];
 		for (int k = 0; k < matrix.length; k++) {
 			for (int l = 0; l < matrix[k].length; l++) {
@@ -318,6 +363,7 @@ public class Search
 			ArrayList<Boolean> arl = new ArrayList<>(Arrays.asList(matrix1[i]));
 			list.add(arl);
 		}
+
 		return list;
 	}
 
