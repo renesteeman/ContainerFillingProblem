@@ -13,7 +13,7 @@ public class SearchDLL
     public static ArrayList<ArrayList<Boolean>> algXreturn;
     public static ArrayList<ArrayList<Integer>> supMat;
     public static ArrayList<Integer> solutions= new ArrayList<>();
-    public static final char[] input = {'T','W','Z','L','I','Y'};
+    public static final char[] input = {'W','T','L','I','Y','V'};
     public static ArrayList<String> tempArr= new ArrayList<>();
     public static ArrayList<String> solArr= new ArrayList<>();
     // Static UI class to display the board
@@ -82,7 +82,8 @@ public class SearchDLL
                 }
             }
             //getting back to the column node
-            workingNode=workingNode.getColumn();
+            if(workingNode.hasColumn())
+                workingNode=workingNode.getColumn();
         }
         return header;
     }

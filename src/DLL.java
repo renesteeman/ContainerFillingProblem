@@ -103,4 +103,8 @@ class Node {
         if(this.getDown()!=null) return true;
         else return false;
     }
+    public boolean hasColumn(){
+	    if(this.getColumn()!=null) return true;
+	    else return false;
+    }
 }
