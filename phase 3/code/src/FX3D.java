@@ -47,6 +47,7 @@ public class FX3D extends Application {
     final static int SCREEN_WIDTH = (int) screenInfo.getWidth();
     final static int SCREEN_HEIGHT = (int) screenInfo.getHeight()-100;
 
+
     final static double TWO_D_WIDTH = .25 * SCREEN_WIDTH;
     final static double THREE_D_WIDTH = .75 * SCREEN_WIDTH;
 
@@ -137,8 +138,11 @@ public class FX3D extends Application {
     
     //keep track of UIInput during 'layering'
     static int[][][] tmpUIInput = new int[Wrapper.CONTAINER_WIDTH/Wrapper.cellSize][Wrapper.CONTAINER_HEIGHT/Wrapper.cellSize][Wrapper.CONTAINER_DEPTH/Wrapper.cellSize];
+    static int[][][] UIInput = new int[Wrapper.CONTAINER_WIDTH/Wrapper.cellSize][Wrapper.CONTAINER_HEIGHT/Wrapper.cellSize][Wrapper.CONTAINER_DEPTH/Wrapper.cellSize];
 
     public static void main(String[] args){
+        clearInput(tmpUIInput);
+        clearInput(UIInput);
         launch(args);
     }
 
@@ -157,7 +161,7 @@ public class FX3D extends Application {
     public static void updateUI(){
         //TODO fix slider not working
         updateUIPreElements(mainStage);
-        updateTmpUIInput();
+        //updateTmpUIInput();
         updateUIElements(mainStage);
         updateUIPostElements(mainStage);
     }
@@ -399,9 +403,9 @@ public class FX3D extends Application {
             }
 
             //TODO remove after testing
-            test.giveInput();
-        });
+            Gbot.test();
 
+        });
         threeD.setCamera(camera);
         stage.setTitle("Filling 3D objects");
         threeD.setFill(BACKGROUND_COLOR);
@@ -433,8 +437,7 @@ public class FX3D extends Application {
                 valueSlider = newValue.intValue();
 
                 // Set all x and z values above the specified y value to 0 while coping the rest
-                updateTmpUIInput();
-
+                //updateTmpUIInput();
                 updateUI();
             }
         });
@@ -446,6 +449,28 @@ public class FX3D extends Application {
 
         layerLabel.setVisible(true);
         layerSlider.setVisible(true);
+    }
+
+    public static void clearInput(int[][][]input){
+        for(int x=0; x<input.length; x++) {
+            for (int y = 0; y < input[x].length; y++) {
+                for (int z = 0; z < input[x][y].length; z++) {
+                    input[x][y][z]=0;
+                }
+            }
+        }
+    }
+
+    public static int[][][] copyInput(int[][][]input){
+        int [][][] in2= new int[input.length][input[0].length][input[0][0].length];
+        for(int x=0; x<input.length; x++) {
+            for (int y = 0; y < input[x].length; y++) {
+                for (int z = 0; z < input[x][y].length; z++) {
+                    in2[x][y][z]=input[x][y][z];
+                }
+            }
+        }
+        return in2;
     }
 
     static void updateUIElements(Stage stage){
@@ -460,10 +485,10 @@ public class FX3D extends Application {
 
         //give every filled in field a box representation and keep color in mind
         //create all the boxes
-        for(int x=0; x<tmpUIInput.length; x++){
-            for(int y=0; y<tmpUIInput[x].length; y++){
-                for(int z=0; z<tmpUIInput[x][y].length; z++){
-                    int currentValue = tmpUIInput[x][y][z];
+        for(int x=0; x<UIInput.length; x++){
+            for(int y=0; y<UIInput[x].length; y++){
+                for(int z=0; z<UIInput[x][y].length; z++){
+                    int currentValue = UIInput[x][y][z];
 
                     //if this field is filled
                     if(currentValue!=0){
@@ -500,7 +525,7 @@ public class FX3D extends Application {
         //TODO work on camera
     }
 
-    static void updateTmpUIInput(){
+    /*static void updateTmpUIInput(){
         // Set all x and z values above the specified y value (valueSlider) to 0 while coping the rest
         for(int x = 0; x < tmpUIInput.length; x++) {
             for(int y = 0; y < tmpUIInput[x].length; y++) {
@@ -517,8 +542,7 @@ public class FX3D extends Application {
                 }
             }
         }
-
-    }
+    }*/
 
     static void addContainer(){
         //Create container (note: Has to be created after adding all the other objects in order to use transparency (I know, javaFX can be crappy))

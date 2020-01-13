@@ -1,9 +1,9 @@
-import dlx.DancingLinks.*;
-import java.util.*;
-import dlx.SudokuDLX.*;
+//import dlx.DancingLinks.*;
+//import java.util.*;
+//import dlx.SudokuDLX.*;
 
 class SudokuHandler{
-    int size = 9;
+    /*int size = 9;
 
     public void handleSolution(List<DancingNode> answer){
         int[][] result = parseBoard(answer);
@@ -52,5 +52,5 @@ class DefaultHandler implements SolutionHandler{
             }
             System.out.println(ret);
         }
-    }
+    }*/
 }

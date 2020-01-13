@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="9bc6439b-9108-412a-b5a5-2468f11068a2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/phase 3/code/src/Gbot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/phase 1 and 2/src/Compiled/production/src/topIndividuals2019-12-02.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/phase 1 and 2/src/java/Phase1/Search.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/phase 1 and 2/src/java/Phase2/Tetris/Gbot.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/phase 1 and 2/src/java/Phase2/Tetris/Tetris.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/phase 3/code/src/DancingLinks.java" beforeDir="false" afterPath="$PROJECT_DIR$/phase 3/code/src/DancingLinks.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/phase 3/code/src/DancingLinksProblem.java" beforeDir="false" afterPath="$PROJECT_DIR$/phase 3/code/src/DancingLinksProblem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/phase 3/code/src/FX3D.java" beforeDir="false" afterPath="$PROJECT_DIR$/phase 3/code/src/FX3D.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/phase 3/code/src/SolutionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/phase 3/code/src/SolutionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/phase 3/code/src/Wrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/phase 3/code/src/Wrapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/phase 3/code/src/testX.java" beforeDir="false" afterPath="$PROJECT_DIR$/phase 3/code/src/testX.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/phase 3/code/src" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="FX3D" />
+      <module name="Tetris" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <servers />
+  </component>
+</project>

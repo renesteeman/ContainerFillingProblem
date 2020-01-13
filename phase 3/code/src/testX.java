@@ -1,4 +1,4 @@
-public class testX {
+public class testX {/*
     public static void main(String[] args){
         //TODO upgrade to actual data
 
@@ -24,4 +24,4 @@ public class testX {
         dancingLinksProblem.createDataStructure();
 
     }
-}
+*/}

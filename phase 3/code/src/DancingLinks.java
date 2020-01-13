@@ -3,7 +3,7 @@
 // Implementation of the Dancing Links algorithm for exact cover.
 import java.util.*;
 
-public class DancingLinks {
+public class DancingLinks {/*
 
     static final boolean verbose = true;
 
@@ -246,5 +246,5 @@ public class DancingLinks {
         search(0);
         if(verbose) showInfo();
     }
-
+*/
 }

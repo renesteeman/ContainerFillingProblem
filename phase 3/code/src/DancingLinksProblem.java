@@ -16,7 +16,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DancingLinksProblem {
+public class DancingLinksProblem {/*
     boolean[][] inputMatrix;
     DataObject[][] dataStructure;
     String[] headerNames;
@@ -150,5 +150,5 @@ public class DancingLinksProblem {
 
         return smallestCO;
     }
-
+*/
 }
