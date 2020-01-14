@@ -567,8 +567,8 @@ public class FX3D extends Application {
         Rotate yRotate;
         //Add both transformation to the container
         contentGroup.getTransforms().addAll(
-                xRotate = new Rotate(0, Wrapper.CONTAINER_WIDTH/2, Wrapper.CONTAINER_HEIGHT/2, Wrapper.CONTAINER_DEPTH/2, Rotate.X_AXIS),
-                yRotate = new Rotate(0, Wrapper.CONTAINER_WIDTH/2, Wrapper.CONTAINER_HEIGHT/2, Wrapper.CONTAINER_DEPTH/2, Rotate.Y_AXIS)
+                xRotate = new Rotate(0, 0.5*Wrapper.CONTAINER_WIDTH, 0.5*Wrapper.CONTAINER_HEIGHT, 0.5*Wrapper.CONTAINER_DEPTH, Rotate.X_AXIS),
+                yRotate = new Rotate(0, 0.5*Wrapper.CONTAINER_WIDTH, 0.5*Wrapper.CONTAINER_HEIGHT, 0.5*Wrapper.CONTAINER_DEPTH, Rotate.Y_AXIS)
         );
         /*Bind Double property angleX/angleY with corresponding transformation.
         When we update angleX / angleY, the transform will also be auto updated.*/

@@ -356,9 +356,10 @@ public class Gbot {
                         int rating = 0;
 
                         algorithm[0] = getHeight();
+                        algorithm[1] = getCompactness();
 
 
-                        rating += algorithm[0] * -1;
+                        rating += algorithm[0] * -1 + getCompactness()* -0.01;
 
                         move[0] = a;
                         move[1] = i;
@@ -711,7 +712,9 @@ public class Gbot {
         return height;
     }
 
-    /*private static double getCompactness() {
+    /*
+        Method initally suppied by Sam, could be developed further
+        private static double getCompactness() {
         int x = (int)Math.round(Wrapper.ACTUAL_CONTAINER_WIDTH * 2);
         int y = (int) Math.round(Wrapper.ACTUAL_CONTAINER_HEIGHT * 2);
         int z = (int) Math.round(Wrapper.ACTUAL_CONTAINER_DEPTH * 2);
@@ -729,6 +732,45 @@ public class Gbot {
         }
         return height;
     }*/
+
+    /*
+    Based on https://core.ac.uk/download/pdf/82384325.pdf Section 2: Concepts and definitions
+     */
+    private static double getCompactness() {
+        int x = (int) Math.round(Wrapper.ACTUAL_CONTAINER_WIDTH * 2);
+        int y = (int) Math.round(Wrapper.ACTUAL_CONTAINER_HEIGHT * 2);
+        int z = (int) Math.round(Wrapper.ACTUAL_CONTAINER_DEPTH * 2);
+        int enclosingSurfaceArea = 0;
+        int volume = 0;
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < y; j++) {
+                for (int k = 0; k < z; k++) {
+                    if (FX3D.UIInput[i][j][k] != 0) {
+                        if(i-1>=0 && FX3D.UIInput[i-1][j][k] == 0){
+                                enclosingSurfaceArea++;
+                            }
+                        if(j-1>=0 && FX3D.UIInput[i][j-1][k] == 0){
+                                enclosingSurfaceArea++;
+                            }
+                        if(k-1>=0 && FX3D.UIInput[i-1][j][k] == 0){
+                                enclosingSurfaceArea++;
+                            }
+                        if(i+1<x && FX3D.UIInput[i-1][j][k] == 0){
+                                enclosingSurfaceArea++;
+                            }
+                        if(j+1<y && FX3D.UIInput[i-1][j][k] == 0){
+                                enclosingSurfaceArea++;
+                            }
+                        if(k+1<x && FX3D.UIInput[i-1][j][k] == 0){
+                                enclosingSurfaceArea++;
+                            }
+                        volume++;
+                    }
+                }
+            }
+        }
+        return Math.pow(enclosingSurfaceArea,3)/Math.pow(volume,2);
+    }
 
     /**
      * Sorts the array of genes
