@@ -31,6 +31,9 @@ public class Gbot {
     private static ArrayList<Integer> scores = new ArrayList<Integer>();
     public static int[] bestMoveNext;
     public static int[][][] T1 = new int[][][]{{{1, 1, 1}}, {{0, 1, 0}}, {{0, 1, 0}}};
+    public static int[][][][] rotparcel1=parcelRotations(parcelCreator(1, 1, 2));
+    public static int[][][][] rotparcel2=parcelRotations(parcelCreator(1, 1.5, 2));
+    public static int[][][][] rotparcel3=parcelRotations(parcelCreator(1.5, 1.5, 1.5));
 
     //A: 1.0 x 1.0 x 2.0 B: 1.0 x 1.5 x 2.0 C: 1.5 x 1.5 x 1.5
     public static int[][][][] aShape = new int[][][][]{
@@ -40,7 +43,113 @@ public class Gbot {
             {{{1, 1}, {1, 1}, {1, 1}, {1, 1}}, {{1, 1}, {1, 1}, {1, 1}, {1, 1}}}
 
     };
+public static int numParcelRotations(int[][][] a){
+    if(a.length==a[0].length&&a[0].length==a[0][0].length){
+        return 1;
+    }
+    else if((a.length==a[0].length&&a[0].length!=a[0][0].length)||(a.length!=a[0].length&&a[0].length==a[0][0].length)||(a.length==a[0][0].length&&a[0].length!=a[0][0].length)){
+        return 3;
+    }
+    else{
+        return 6;
+    }
+}
 
+    // this method takes a,b,c and returns a parcel
+    public static int[][][] parcelCreator(double x,double y,double z){
+        x=Math.round(x*2);
+        y=Math.round(y*2);
+        z=Math.round(z*2);
+        int[][][] a= new int[(int) x][(int) y][(int) z];
+        for(int i=0;i<x;i++){
+            for(int j=0;j<y;j++){
+                for(int k=0;k<z;k++){
+            a[i][j][k]=1;
+                }
+            }   
+        }
+        return a;
+    }
+    //this method returns an array with all possible rotations of a parcel
+    public static int[][][][] parcelRotations(int[][][] a){
+        int[][][][] b = new int[numParcelRotations(a)][][][];
+        
+                double x=(double)a.length/2;
+                double y=(double)a[0].length/2;
+                double z=(double)a[0][0].length/2;
+                int i=0;
+                    if(i==0){
+                        
+                        b[i]=a;
+                        i++;
+                    }
+                   if(b.length>1){ 
+                    if(parcelCreator(x, z, y)!=a){
+                        boolean isNotSame=true;
+                        for(int j=i-1;j>0;j--){ 
+                            if(parcelCreator(x, z, y)==b[j]){
+                                isNotSame=false;
+                            }
+                        }
+                        if(isNotSame&&i<b.length){
+                            b[i]=parcelCreator(x, z, y);
+                            i++;
+                    }
+                        }
+                        if(parcelCreator(z, y, x)!=a){
+                            boolean isNotSame=true;
+                            for(int j=i-1;j>0;j--){ 
+                                if(parcelCreator(z, y, x)==b[j]){
+                                    isNotSame=false;
+                                }
+                            }
+                            if(isNotSame&&i<b.length){
+                                b[i]=parcelCreator(z, y, x);
+                                i++;
+                        }
+                            }    
+                            if(parcelCreator(y, x, z)!=a){
+                                boolean isNotSame=true;
+                                for(int j=i-1;j>0;j--){ 
+                                    if(parcelCreator(y, x, z)==b[j]){
+                                        isNotSame=false;
+                                    }
+                                }
+                                if(isNotSame&&i<b.length){
+                                    b[i]=parcelCreator(y, x, z);
+                                    i++;
+                            }
+                                }
+                                
+                    }
+                    if(b.length>4){
+                        if(parcelCreator(z, x, y)!=a){
+                            boolean isNotSame=true;
+                            for(int j=i-1;j>0;j--){ 
+                                if(parcelCreator(z, x, y)==b[j]){
+                                    isNotSame=false;
+                                }
+                            }
+                            if(isNotSame&&i<b.length){
+                                b[i]=parcelCreator(z, x, y);
+                                i++;
+                        }
+                            }
+                            if(parcelCreator(y, z, x)!=a){
+                                boolean isNotSame=true;
+                                for(int j=i-1;j>0;j--){ 
+                                    if(parcelCreator(y, z, x)==b[j]){
+                                        isNotSame=false;
+                                    }
+                                }
+                                if(isNotSame&&i<b.length){
+                                    b[i]=parcelCreator(y, z, x);
+                                    i++;
+                            }
+                                }
+                    }
+                    return b;
+    }
     public static void addSolid(int[][][] solid, int[] coord, int color) { //add the solid to the container at the specified coordinates
         if (!checkCollision(solid, coord)) {
             for (int i = 0; i < solid.length; i++) {
