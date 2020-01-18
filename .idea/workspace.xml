@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9bc6439b-9108-412a-b5a5-2468f11068a2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/phase 3/code/src/Gbot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/phase 1 and 2/src/Compiled/production/src/topIndividuals2019-12-02.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/phase 1 and 2/src/java/Phase1/Search.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/phase 1 and 2/src/java/Phase2/Tetris/Gbot.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/phase 1 and 2/src/java/Phase2/Tetris/Tetris.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/phase 3/code/src/DancingLinks.java" beforeDir="false" afterPath="$PROJECT_DIR$/phase 3/code/src/DancingLinks.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/phase 3/code/src/DancingLinksProblem.java" beforeDir="false" afterPath="$PROJECT_DIR$/phase 3/code/src/DancingLinksProblem.java" afterDir="false" />
+    <list default="true" id="199ac34e-6947-47cf-85e0-702a6d9b57f8" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/FX3D.java.rej" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/META-INF/pentominoes-group25_2019.kotlin_module" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/phase 3/code/src/FX3D.java" beforeDir="false" afterPath="$PROJECT_DIR$/phase 3/code/src/FX3D.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/phase 3/code/src/SolutionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/phase 3/code/src/SolutionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/phase 3/code/src/Wrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/phase 3/code/src/Wrapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/phase 3/code/src/testX.java" beforeDir="false" afterPath="$PROJECT_DIR$/phase 3/code/src/testX.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/phase 3/code/src/Gbot.java" beforeDir="false" afterPath="$PROJECT_DIR$/phase 3/code/src/Gbot.java" afterDir="false" />
     </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="ProjectId" id="1WWX1qH4QqqjLN8oMnbgcVcZcbZ" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/phase 3/code/src" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../javafx-sdk-13.0.2/lib" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="restartRequiresConfirmation" value="false" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -45,9 +48,12 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
+    <configuration name="FX3D" type="Application" factoryName="Application">
+      <option name="ALTERNATIVE_JRE_PATH" value="13" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="FX3D" />
-      <module name="Tetris" />
+      <module name="pentominoes-group25_2019" />
+      <option name="VM_PARAMETERS" value="--module-path &quot;C:\Users\Samuele\IdeaProjects\javafx-sdk-13.0.2\lib&quot; --add-modules javafx.controls,javafx.fxml" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -57,6 +63,31 @@
     <configuration />
   </component>
   <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="199ac34e-6947-47cf-85e0-702a6d9b57f8" name="Default Changelist" comment="" />
+      <created>1579266112461</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1579266112461</updated>
+      <workItem from="1579266116536" duration="2382000" />
+      <workItem from="1579358952260" duration="2283000" />
+    </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

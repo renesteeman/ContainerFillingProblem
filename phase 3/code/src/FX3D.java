@@ -459,6 +459,7 @@ public class FX3D extends Application {
                 }
             }
         }
+
     }
 
     public static int[][][] copyInput(int[][][]input){
